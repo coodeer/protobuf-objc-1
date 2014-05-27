@@ -1,12 +1,13 @@
 # Protocol Buffers, Objective C
 
-An implementation of Protocol Buffers in Objective C.
+An implementation of Protocol Buffers in Objective C. [Additional info][info]
 
 Protocol Buffers are a way of encoding structured data in an efficient yet extensible format.
 This project is based on an implementation of Protocol Buffers from Google.  See the
 [Google protobuf project][g-protobuf] for more information.
 
 [g-protobuf]: http://code.google.com/p/protobuf/
+[info]: https://code.google.com/p/metasyntactic/wiki/ProtocolBuffers
 
 
 # Credits
