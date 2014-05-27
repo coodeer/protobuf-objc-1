@@ -17,6 +17,8 @@
 
 #import "GeneratedMessage.h"
 
+#import "ExtensionField.h"
+
 /**
  * Generated message classes for message types that contain extension ranges
  * subclass this.
@@ -70,6 +72,15 @@
 - (void) writeExtensionsToCodedOutputStream:(PBCodedOutputStream*) output
                                        from:(int32_t) startInclusive
                                          to:(int32_t) endExclusive;
+- (void) writeExtensionDescriptionToMutableString:(NSMutableString*) output
+                                             from:(int32_t) startInclusive
+                                               to:(int32_t) endExclusive
+                                       withIndent:(NSString*) indent;
+- (BOOL) isEqualExtensionsInOther:(PBExtendableMessage*)otherMessage
+                             from:(int32_t) startInclusive
+                               to:(int32_t) endExclusive;
+- (NSUInteger) hashExtensionsFrom:(int32_t) startInclusive
+                               to:(int32_t) endExclusive;
 
 
 

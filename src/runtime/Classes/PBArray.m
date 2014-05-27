@@ -17,7 +17,6 @@
 // Author: Jon Parise <jon@booyah.com>
 
 #import "PBArray.h"
-#import "CodedInputStream.h"
 
 NSString * const PBArrayTypeMismatchException = @"PBArrayTypeMismatchException";
 NSString * const PBArrayNumberExpectedException = @"PBArrayNumberExpectedException";
@@ -62,69 +61,28 @@ static void PBArraySetDoubleValue(NSNumber *number, void *value)
 	*((Float64 *)value) = [number doubleValue];
 }
 
-#pragma mark PBCodedInputStream Getters
-
-typedef void (*PBInputStreamGetter)(PBCodedInputStream *input, void *value);
-
-static void PBStreamGetBoolValue(PBCodedInputStream *input, void *value)
-{
-	*(BOOL *)(value) = [input readBool];
-}
-
-static void PBStreamGetInt32Value(PBCodedInputStream *input, void *value)
-{
-	*(int32_t *)(value) = [input readInt32];
-}
-
-static void PBStreamGetUInt32Value(PBCodedInputStream *input, void *value)
-{
-	*(uint32_t *)(value) = [input readUInt32];
-}
-
-static void PBStreamGetInt64Value(PBCodedInputStream *input, void *value)
-{
-	*(int64_t *)(value) = [input readInt64];
-}
-
-static void PBStreamGetUInt64Value(PBCodedInputStream *input, void *value)
-{
-	*(uint64_t *)(value) = [input readUInt64];
-}
-
-static void PBStreamGetFloatValue(PBCodedInputStream *input, void *value)
-{
-	*(Float32 *)(value) = [input readFloat];
-}
-
-static void PBStreamGetDoubleValue(PBCodedInputStream *input, void *value)
-{
-	*(Float64 *)(value) = [input readDouble];
-}
-
 #pragma mark Array Value Types
 
 typedef struct _PBArrayValueTypeInfo
 {
 	const size_t size;
 	const PBArrayValueSetter setter;
-	const PBInputStreamGetter getter;
 } PBArrayValueTypeInfo;
 
 static PBArrayValueTypeInfo PBValueTypes[] =
 {
-	{ sizeof(id),		NULL,					NULL					},
-	{ sizeof(BOOL),		PBArraySetBoolValue,	PBStreamGetBoolValue	},
-	{ sizeof(int32_t),	PBArraySetInt32Value,	PBStreamGetInt32Value	},
-	{ sizeof(uint32_t),	PBArraySetUInt32Value,	PBStreamGetUInt32Value	},
-	{ sizeof(int64_t),	PBArraySetInt64Value,	PBStreamGetInt64Value	},
-	{ sizeof(uint64_t),	PBArraySetUInt64Value,	PBStreamGetUInt64Value	},
-	{ sizeof(Float32),	PBArraySetFloatValue,	PBStreamGetFloatValue	},
-	{ sizeof(Float64),	PBArraySetDoubleValue,	PBStreamGetDoubleValue	},
+	{ sizeof(id),		NULL					},
+	{ sizeof(BOOL),		PBArraySetBoolValue		},
+	{ sizeof(int32_t),	PBArraySetInt32Value	},
+	{ sizeof(uint32_t),	PBArraySetUInt32Value	},
+	{ sizeof(int64_t),	PBArraySetInt64Value	},
+	{ sizeof(uint64_t),	PBArraySetUInt64Value	},
+	{ sizeof(Float32),	PBArraySetFloatValue	},
+	{ sizeof(Float64),	PBArraySetDoubleValue	},
 };
 
 #define PBArrayValueTypeSize(type)		PBValueTypes[type].size
 #define PBArrayValueTypeSetter(type)	PBValueTypes[type].setter
-#define PBArrayValueTypeGetter(type)	PBValueTypes[type].getter
 
 #pragma mark Helper Macros
 
@@ -141,7 +99,7 @@ static PBArrayValueTypeInfo PBValueTypes[] =
 
 #define PBArrayValueRangeAssert(index) \
 	if (__builtin_expect(index >= _count, 0)) \
-		[NSException raise:NSRangeException format: @"index (%lu) beyond bounds (%lu)", index, _count];
+		[NSException raise:NSRangeException format: @"index (%llu) beyond bounds (%llu)", (uint64_t)index, (uint64_t)_count];
 
 #define PBArrayNumberAssert(value) \
 	if (__builtin_expect(![value isKindOfClass:[NSNumber class]], 0)) \
@@ -161,14 +119,14 @@ static PBArrayValueTypeInfo PBValueTypes[] =
 
 - (id)initWithCount:(NSUInteger)count valueType:(PBArrayValueType)valueType
 {
-	if (self = [super init])
+	if ((self = [super init]))
 	{
 		_valueType = valueType;
 		_count = count;
 		_capacity = count;
 
 		if (_capacity)
-		{		
+		{
 			_data = malloc(_capacity * PBArrayValueTypeSize(_valueType));
 			if (_data == NULL)
 			{
@@ -206,8 +164,8 @@ static PBArrayValueTypeInfo PBValueTypes[] =
 
 - (NSString *)description
 {
-	return [NSString stringWithFormat:@"<%@ %p>{valueType = %d, count = %d, capacity = %d, data = %p}",
-			[self class], self, _valueType, _count, _capacity, _data];	
+	return [NSString stringWithFormat:@"<%@ %p>{valueType = %d, count = %lu, capacity = %lu, data = %p}",
+			[self class], self, _valueType, (unsigned long)_count, (unsigned long)_capacity, _data];
 }
 
 - (NSUInteger)count
@@ -233,10 +191,10 @@ static PBArrayValueTypeInfo PBValueTypes[] =
 	}
 
 	state->itemsPtr = (id *)_data;
-    state->state = _count;
-    state->mutationsPtr = (unsigned long *)self;
+	state->state = _count;
+	state->mutationsPtr = (unsigned long *)self;
 
-    return _count;
+	return _count;
 }
 
 - (id)objectAtIndex:(NSUInteger)index
@@ -295,6 +253,32 @@ static PBArrayValueTypeInfo PBValueTypes[] =
 	return ((Float64 *)_data)[index];
 }
 
+- (BOOL)isEqualToArray:(PBArray *)array
+{
+	if (self == array)
+	{
+		return YES;
+	}
+	else if (array->_count != _count)
+	{
+		return NO;
+	}
+	else
+	{
+		return memcmp(array->_data, _data, _count * PBArrayValueTypeSize(_valueType)) == 0;
+	}
+}
+
+- (BOOL)isEqual:(id)object
+{
+	BOOL equal = NO;
+	if ([object isKindOfClass:[PBArray class]])
+	{
+		equal = [self isEqualToArray:object];
+	}
+	return equal;
+}
+
 @end
 
 @implementation PBArray (PBArrayExtended)
@@ -314,7 +298,7 @@ static PBArrayValueTypeInfo PBValueTypes[] =
 
 		PBArrayForEachObject(result->_data, result->_count, retain);
 	}
-	
+
 	return [result autorelease];
 }
 
@@ -344,7 +328,7 @@ static PBArrayValueTypeInfo PBValueTypes[] =
 
 - (id)initWithValues:(const void *)values count:(NSUInteger)count valueType:(PBArrayValueType)valueType
 {
-	if (self = [self initWithCount:count valueType:valueType])
+	if ((self = [self initWithCount:count valueType:valueType]))
 	{
 		memcpy(_data, values, count * PBArrayValueTypeSize(_valueType));
 		PBArrayForEachObject(_data, _count, retain);
@@ -355,7 +339,7 @@ static PBArrayValueTypeInfo PBValueTypes[] =
 
 - (id)initWithArray:(NSArray *)array valueType:(PBArrayValueType)valueType
 {
-	if (self = [self initWithCount:[array count] valueType:valueType])
+	if ((self = [self initWithCount:[array count] valueType:valueType]))
 	{
 		const size_t elementSize = PBArrayValueTypeSize(valueType);
 		size_t offset = 0;
@@ -393,7 +377,7 @@ static PBArrayValueTypeInfo PBValueTypes[] =
 - (void)ensureAdditionalCapacity:(NSUInteger)additionalSlots
 {
 	const NSUInteger requiredSlots = _count + additionalSlots;
-	
+
 	if (requiredSlots > _capacity)
 	{
 		// If we haven't allocated any capacity yet, simply reserve
@@ -409,7 +393,7 @@ static PBArrayValueTypeInfo PBValueTypes[] =
 			while (_capacity < requiredSlots)
 			{
 				_capacity *= 2;
-			}			
+			}
 		}
 
 		const size_t size = _capacity * PBArrayValueTypeSize(_valueType);
@@ -486,7 +470,7 @@ static PBArrayValueTypeInfo PBValueTypes[] =
 {
 	PBArrayValueTypeAssert(array.valueType);
 	[self ensureAdditionalCapacity:array.count];
-	
+
 	const size_t elementSize = PBArrayValueTypeSize(_valueType);
 	memcpy(_data + (_count * elementSize), array.data, array.count * elementSize);
 	_count += array.count;
@@ -503,23 +487,6 @@ static PBArrayValueTypeInfo PBValueTypes[] =
 	_count += count;
 
 	PBArrayForEachObject(values, count, retain);
-}
-
-- (void)appendInputStream:(PBCodedInputStream *)input
-{
-	const size_t elementSize = PBArrayValueTypeSize(_valueType);
-	const size_t originalSize = _count * elementSize;
-
-	PBInputStreamGetter getter = PBArrayValueTypeGetter(_valueType);
-
-	size_t offset = originalSize;
-	while (input.bytesUntilLimit > 0)
-	{
-		[self ensureAdditionalCapacity:1];
-		getter(input, _data + offset);
-		offset += elementSize;
-		_count++;
-	}
 }
 
 @end

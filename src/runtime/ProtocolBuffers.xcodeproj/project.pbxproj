@@ -3,10 +3,16 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 45;
+	objectVersion = 46;
 	objects = {
 
 /* Begin PBXBuildFile section */
+		8B0444601469EFD500BB156C /* UnittestEmpty.pb.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B0444571469EFD500BB156C /* UnittestEmpty.pb.m */; };
+		8B0444611469EFD500BB156C /* UnittestEnormousDescriptor.pb.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B0444591469EFD500BB156C /* UnittestEnormousDescriptor.pb.m */; };
+		8B0444621469EFD500BB156C /* UnittestImportLite.pb.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B04445B1469EFD500BB156C /* UnittestImportLite.pb.m */; };
+		8B0444631469EFD500BB156C /* UnittestLite.pb.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B04445D1469EFD500BB156C /* UnittestLite.pb.m */; };
+		8B0444641469EFD500BB156C /* UnittestLiteImportsNonlite.pb.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B04445F1469EFD500BB156C /* UnittestLiteImportsNonlite.pb.m */; };
+		8B0444671469F01800BB156C /* UnittestNoGenericServices.pb.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B0444661469F01800BB156C /* UnittestNoGenericServices.pb.m */; };
 		AA747D9F0F9514B9006C5449 /* ProtocolBuffers_Prefix.pch in Headers */ = {isa = PBXBuildFile; fileRef = AA747D9E0F9514B9006C5449 /* ProtocolBuffers_Prefix.pch */; };
 		AACBBE4A0F95108600F1A2B1 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AACBBE490F95108600F1A2B1 /* Foundation.framework */; };
 		C5291BCA126E62900038760B /* DescriptorTests.m in Sources */ = {isa = PBXBuildFile; fileRef = C5291BC9126E62900038760B /* DescriptorTests.m */; };
@@ -125,6 +131,18 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		8B0444561469EFD500BB156C /* UnittestEmpty.pb.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = UnittestEmpty.pb.h; path = Tests/UnittestEmpty.pb.h; sourceTree = "<group>"; };
+		8B0444571469EFD500BB156C /* UnittestEmpty.pb.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = UnittestEmpty.pb.m; path = Tests/UnittestEmpty.pb.m; sourceTree = "<group>"; };
+		8B0444581469EFD500BB156C /* UnittestEnormousDescriptor.pb.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = UnittestEnormousDescriptor.pb.h; path = Tests/UnittestEnormousDescriptor.pb.h; sourceTree = "<group>"; };
+		8B0444591469EFD500BB156C /* UnittestEnormousDescriptor.pb.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = UnittestEnormousDescriptor.pb.m; path = Tests/UnittestEnormousDescriptor.pb.m; sourceTree = "<group>"; };
+		8B04445A1469EFD500BB156C /* UnittestImportLite.pb.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = UnittestImportLite.pb.h; path = Tests/UnittestImportLite.pb.h; sourceTree = "<group>"; };
+		8B04445B1469EFD500BB156C /* UnittestImportLite.pb.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = UnittestImportLite.pb.m; path = Tests/UnittestImportLite.pb.m; sourceTree = "<group>"; };
+		8B04445C1469EFD500BB156C /* UnittestLite.pb.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = UnittestLite.pb.h; path = Tests/UnittestLite.pb.h; sourceTree = "<group>"; };
+		8B04445D1469EFD500BB156C /* UnittestLite.pb.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = UnittestLite.pb.m; path = Tests/UnittestLite.pb.m; sourceTree = "<group>"; };
+		8B04445E1469EFD500BB156C /* UnittestLiteImportsNonlite.pb.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = UnittestLiteImportsNonlite.pb.h; path = Tests/UnittestLiteImportsNonlite.pb.h; sourceTree = "<group>"; };
+		8B04445F1469EFD500BB156C /* UnittestLiteImportsNonlite.pb.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = UnittestLiteImportsNonlite.pb.m; path = Tests/UnittestLiteImportsNonlite.pb.m; sourceTree = "<group>"; };
+		8B0444651469F01800BB156C /* UnittestNoGenericServices.pb.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = UnittestNoGenericServices.pb.h; path = Tests/UnittestNoGenericServices.pb.h; sourceTree = "<group>"; };
+		8B0444661469F01800BB156C /* UnittestNoGenericServices.pb.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = UnittestNoGenericServices.pb.m; path = Tests/UnittestNoGenericServices.pb.m; sourceTree = "<group>"; };
 		AA747D9E0F9514B9006C5449 /* ProtocolBuffers_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ProtocolBuffers_Prefix.pch; sourceTree = SOURCE_ROOT; };
 		AACBBE490F95108600F1A2B1 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		C5291BC8126E62900038760B /* DescriptorTests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DescriptorTests.h; path = Tests/DescriptorTests.h; sourceTree = "<group>"; };
@@ -247,7 +265,7 @@
 		C5CBB833126CC58A00354923 /* PBFileDescriptor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PBFileDescriptor.m; sourceTree = "<group>"; };
 		C5CBB834126CC58A00354923 /* PBGenericDescriptor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PBGenericDescriptor.h; sourceTree = "<group>"; };
 		C5D8D6E912767BC300F0BAE4 /* ArrayTests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ArrayTests.h; path = Tests/ArrayTests.h; sourceTree = "<group>"; };
-		C5D8D6EA12767BC300F0BAE4 /* ArrayTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ArrayTests.m; path = Tests/ArrayTests.m; sourceTree = "<group>"; };
+		C5D8D6EA12767BC300F0BAE4 /* ArrayTests.m */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 2; lastKnownFileType = sourcecode.c.objc; name = ArrayTests.m; path = Tests/ArrayTests.m; sourceTree = "<group>"; tabWidth = 2; usesTabs = 0; };
 		C5F36E031275FA5A00013BB4 /* PBArray.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PBArray.h; sourceTree = "<group>"; };
 		C5F36E041275FA5A00013BB4 /* PBArray.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PBArray.m; sourceTree = "<group>"; };
 		D2AAC07E0554694100DB518D /* libProtocolBuffers.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libProtocolBuffers.a; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -465,6 +483,16 @@
 			children = (
 				C5B03F8C12517A1A0087887C /* Unittest.pb.h */,
 				C5B03F8D12517A1A0087887C /* Unittest.pb.m */,
+				8B0444561469EFD500BB156C /* UnittestEmpty.pb.h */,
+				8B0444571469EFD500BB156C /* UnittestEmpty.pb.m */,
+				8B0444581469EFD500BB156C /* UnittestEnormousDescriptor.pb.h */,
+				8B0444591469EFD500BB156C /* UnittestEnormousDescriptor.pb.m */,
+				8B04445A1469EFD500BB156C /* UnittestImportLite.pb.h */,
+				8B04445B1469EFD500BB156C /* UnittestImportLite.pb.m */,
+				8B04445C1469EFD500BB156C /* UnittestLite.pb.h */,
+				8B04445D1469EFD500BB156C /* UnittestLite.pb.m */,
+				8B04445E1469EFD500BB156C /* UnittestLiteImportsNonlite.pb.h */,
+				8B04445F1469EFD500BB156C /* UnittestLiteImportsNonlite.pb.m */,
 				C5B03F9412517A1A0087887C /* UnittestMset.pb.h */,
 				C5B03F9512517A1A0087887C /* UnittestMset.pb.m */,
 				C57A9FE2125276A400726D16 /* UnittestCustomOptions.pb.h */,
@@ -475,6 +503,8 @@
 				C5B03F9312517A1A0087887C /* UnittestImport.pb.m */,
 				C5B03F9612517A1A0087887C /* UnittestOptimizeFor.pb.h */,
 				C5B03F9712517A1A0087887C /* UnittestOptimizeFor.pb.m */,
+				8B0444651469F01800BB156C /* UnittestNoGenericServices.pb.h */,
+				8B0444661469F01800BB156C /* UnittestNoGenericServices.pb.m */,
 			);
 			name = "Protocol Buffers";
 			sourceTree = "<group>";
@@ -626,8 +656,11 @@
 /* Begin PBXProject section */
 		0867D690FE84028FC02AAC07 /* Project object */ = {
 			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0420;
+			};
 			buildConfigurationList = 1DEB922208733DC00010E9CD /* Build configuration list for PBXProject "ProtocolBuffers" */;
-			compatibilityVersion = "Xcode 3.1";
+			compatibilityVersion = "Xcode 3.2";
 			developmentRegion = English;
 			hasScannedForEncodings = 1;
 			knownRegions = (
@@ -698,6 +731,12 @@
 				C57A9FE4125276A400726D16 /* UnittestCustomOptions.pb.m in Sources */,
 				C5D8D6EB12767BC300F0BAE4 /* ArrayTests.m in Sources */,
 				C5291BCA126E62900038760B /* DescriptorTests.m in Sources */,
+				8B0444601469EFD500BB156C /* UnittestEmpty.pb.m in Sources */,
+				8B0444611469EFD500BB156C /* UnittestEnormousDescriptor.pb.m in Sources */,
+				8B0444621469EFD500BB156C /* UnittestImportLite.pb.m in Sources */,
+				8B0444631469EFD500BB156C /* UnittestLite.pb.m in Sources */,
+				8B0444641469EFD500BB156C /* UnittestLiteImportsNonlite.pb.m in Sources */,
+				8B0444671469F01800BB156C /* UnittestNoGenericServices.pb.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -760,11 +799,9 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
 				COPY_PHASE_STRIP = NO;
 				DSTROOT = /tmp/ProtocolBuffers.dst;
 				GCC_DYNAMIC_NO_PIC = NO;
-				GCC_ENABLE_FIX_AND_CONTINUE = YES;
 				GCC_MODEL_TUNING = G5;
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
@@ -772,9 +809,7 @@
 				INSTALL_PATH = /usr/local/lib;
 				ONLY_ACTIVE_ARCH = NO;
 				PRODUCT_NAME = ProtocolBuffers;
-				SDKROOT = "";
-				VALID_ARCHS = "i386 x86_64";
-				"VALID_ARCHS[sdk=iphoneos*]" = "armv6 armv7";
+				SDKROOT = iphoneos;
 			};
 			name = Debug;
 		};
@@ -782,7 +817,6 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
 				DSTROOT = /tmp/ProtocolBuffers.dst;
 				GCC_MODEL_TUNING = G5;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
@@ -790,27 +824,36 @@
 				INSTALL_PATH = /usr/local/lib;
 				ONLY_ACTIVE_ARCH = NO;
 				PRODUCT_NAME = ProtocolBuffers;
-				SDKROOT = "";
-				VALID_ARCHS = "i386 x86_64";
-				"VALID_ARCHS[sdk=iphoneos*]" = "armv6 armv7";
+				SDKROOT = iphoneos;
 			};
 			name = Release;
 		};
 		1DEB922308733DC00010E9CD /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				GCC_C_LANGUAGE_STANDARD = c99;
 				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				HEADER_SEARCH_PATHS = ../ProtocolBuffers;
 				OBJROOT = Build;
+				ONLY_ACTIVE_ARCH = YES;
 				OTHER_LDFLAGS = "-ObjC";
-				PREBINDING = NO;
 				PRIVATE_HEADERS_FOLDER_PATH = ../ProtocolBuffers/private;
 				PUBLIC_HEADERS_FOLDER_PATH = ../ProtocolBuffers;
-				SDKROOT = iphoneos4.1;
+				SDKROOT = iphoneos;
 				SYMROOT = Build/Products;
 			};
 			name = Debug;
@@ -818,17 +861,27 @@
 		1DEB922408733DC00010E9CD /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				GCC_C_LANGUAGE_STANDARD = c99;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				HEADER_SEARCH_PATHS = ../ProtocolBuffers;
 				OBJROOT = Build;
 				OTHER_LDFLAGS = "-ObjC";
-				PREBINDING = NO;
 				PRIVATE_HEADERS_FOLDER_PATH = ../ProtocolBuffers/private;
 				PUBLIC_HEADERS_FOLDER_PATH = ../ProtocolBuffers;
-				SDKROOT = iphoneos4.1;
+				SDKROOT = iphoneos;
 				SYMROOT = Build/Products;
 			};
 			name = Release;
@@ -837,11 +890,10 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
+				COMBINE_HIDPI_IMAGES = YES;
 				COPY_PHASE_STRIP = NO;
 				FRAMEWORK_SEARCH_PATHS = "$(DEVELOPER_LIBRARY_DIR)/Frameworks";
 				GCC_DYNAMIC_NO_PIC = NO;
-				GCC_ENABLE_FIX_AND_CONTINUE = NO;
 				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
 				GCC_MODEL_TUNING = G5;
 				GCC_OPTIMIZATION_LEVEL = 0;
@@ -856,7 +908,6 @@
 					SenTestingKit,
 					"-all_load",
 				);
-				PREBINDING = NO;
 				PRODUCT_NAME = UnitTests;
 				SDKROOT = "";
 				VALID_ARCHS = "i386 x86_64";
@@ -868,11 +919,10 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
+				COMBINE_HIDPI_IMAGES = YES;
 				COPY_PHASE_STRIP = YES;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				FRAMEWORK_SEARCH_PATHS = "$(DEVELOPER_LIBRARY_DIR)/Frameworks";
-				GCC_ENABLE_FIX_AND_CONTINUE = NO;
 				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
 				GCC_MODEL_TUNING = G5;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
@@ -886,7 +936,6 @@
 					SenTestingKit,
 					"-all_load",
 				);
-				PREBINDING = NO;
 				PRODUCT_NAME = UnitTests;
 				SDKROOT = "";
 				VALID_ARCHS = "i386 x86_64";

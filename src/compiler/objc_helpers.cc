@@ -17,6 +17,7 @@
 
 #include "objc_helpers.h"
 
+#include <limits>
 #include <vector>
 
 #include <google/protobuf/stubs/hash.h>
@@ -134,9 +135,9 @@ namespace google { namespace protobuf { namespace compiler { namespace objective
     for (string::const_iterator it(filename.begin()), itEnd(filename.end()); it != itEnd; ++it) {
       const char c = *it;
 
-      // Ignore non-alphanumeric characters.  The next alphanumeric character
-      // must be uppercased, though.
-      if (!isalnum(c)) {
+      // Ignore undesirable characters.  The good character must be
+      // uppercased, though.
+      if (!isalnum(c) && c != '_') {
         need_uppercase = true;
         continue;
       }
@@ -172,6 +173,15 @@ namespace google { namespace protobuf { namespace compiler { namespace objective
     }
   }
 
+  bool IsRetainedName(const string& name) {
+    static std::string retainednames[] = { "new", "alloc", "copy", "mutableCopy" };
+    for (size_t i = 0; i < sizeof(retainednames) / sizeof(retainednames[0]); ++i) {
+      if (name.compare(0, retainednames[i].length(), retainednames[i]) == 0) {
+        return true;
+      }
+    }
+    return false;
+  }
 
   bool IsBootstrapFile(const FileDescriptor* file) {
     return file->name() == "google/protobuf/descriptor.proto";
@@ -200,7 +210,7 @@ namespace google { namespace protobuf { namespace compiler { namespace objective
 
       if (options.package() != "") {
         path = options.package() + "/" + path;
-      } 
+      }
     }
 
 	return path;
@@ -221,7 +231,10 @@ namespace google { namespace protobuf { namespace compiler { namespace objective
 
 
   string FileClassName(const FileDescriptor* file) {
-    return FileClassPrefix(file) + FileName(file) + "Root";
+    // Ensure the FileClassName is camelcased irrespective of whether the
+    // camelcase_output_filename option is set.
+    return FileClassPrefix(file) +
+        UnderscoresToCapitalizedCamelCase(FileName(file)) + "Root";
   }
 
 
@@ -278,8 +291,8 @@ namespace google { namespace protobuf { namespace compiler { namespace objective
 
 
   string EnumValueName(const EnumValueDescriptor* descriptor) {
-    return 
-      ClassName(descriptor->type()) + 
+    return
+      ClassName(descriptor->type()) +
       UnderscoresToCapitalizedCamelCase(SafeName(descriptor->name()));
   }
 
@@ -395,7 +408,7 @@ namespace google { namespace protobuf { namespace compiler { namespace objective
     }
 
     hash_set<string> kKeywords = MakeKeywordsMap();
-  } 
+  }
 
 
   string SafeName(const string& name) {
@@ -442,9 +455,31 @@ namespace google { namespace protobuf { namespace compiler { namespace objective
         case FieldDescriptor::CPPTYPE_UINT32: return SimpleItoa(static_cast<int32>(field->default_value_uint32()));
         case FieldDescriptor::CPPTYPE_INT64:  return SimpleItoa(field->default_value_int64()) + "L";
         case FieldDescriptor::CPPTYPE_UINT64: return SimpleItoa(static_cast<int64>(field->default_value_uint64())) + "L";
-        case FieldDescriptor::CPPTYPE_DOUBLE: return SimpleDtoa(field->default_value_double());
-        case FieldDescriptor::CPPTYPE_FLOAT:  return SimpleFtoa(field->default_value_float());
         case FieldDescriptor::CPPTYPE_BOOL:   return field->default_value_bool() ? "YES" : "NO";
+        case FieldDescriptor::CPPTYPE_DOUBLE: {
+          const double value = field->default_value_double();
+          if (value == numeric_limits<double>::infinity()) {
+            return "HUGE_VAL";
+          } else if (value == -numeric_limits<double>::infinity()) {
+            return "-HUGE_VAL";
+          } else if (value != value) {
+            return "NAN";
+          } else {
+            return SimpleDtoa(field->default_value_double());
+          }
+        }
+        case FieldDescriptor::CPPTYPE_FLOAT: {
+          const float value = field->default_value_float();
+          if (value == numeric_limits<float>::infinity()) {
+            return "HUGE_VALF";
+          } else if (value == -numeric_limits<float>::infinity()) {
+            return "-HUGE_VALF";
+          } else if (value != value) {
+            return "NAN";
+          } else {
+            return SimpleFtoa(value);
+          }
+        }
         case FieldDescriptor::CPPTYPE_STRING:
           if (field->type() == FieldDescriptor::TYPE_BYTES) {
             if (field->has_default_value()) {
@@ -458,11 +493,13 @@ namespace google { namespace protobuf { namespace compiler { namespace objective
             }
           } else {
             if (AllAscii(field->default_value_string())) {
-              return "@\"" + CEscape(field->default_value_string()) + "\"";
+              return "@\"" +
+                EscapeTrigraphs(CEscape(field->default_value_string())) +
+                "\"";
             } else {
-              return 
+              return
                 "[NSString stringWithUTF8String:\"" +
-                CEscape(field->default_value_string()) +
+                EscapeTrigraphs(CEscape(field->default_value_string())) +
                 "\"]";
             }
           }
@@ -501,6 +538,12 @@ namespace google { namespace protobuf { namespace compiler { namespace objective
     GOOGLE_LOG(FATAL) << "Can't get here.";
     return NULL;
   }
+
+  // Escape C++ trigraphs by escaping question marks to \?
+  string EscapeTrigraphs(const string& to_escape) {
+    return StringReplace(to_escape, "?", "\\?", true);
+  }
+
 }  // namespace objectivec
 }  // namespace compiler
 }  // namespace protobuf

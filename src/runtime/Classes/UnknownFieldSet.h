@@ -15,6 +15,10 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+@class PBCodedOutputStream;
+@class PBField;
+@class PBUnknownFieldSet_Builder;
+
 @interface PBUnknownFieldSet : NSObject {
 @private
   NSDictionary* fields;
@@ -39,5 +43,8 @@
 
 - (BOOL) hasField:(int32_t) number;
 - (PBField*) getField:(int32_t) number;
+
+- (void) writeDescriptionTo:(NSMutableString*) output
+                 withIndent:(NSString*) indent;
 
 @end

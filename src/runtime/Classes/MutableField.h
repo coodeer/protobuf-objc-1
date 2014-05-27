@@ -17,19 +17,19 @@
 
 #import "Field.h"
 
-@interface PBMutableField : PBField {
-}
+@class PBUnknownFieldSet;
 
-+ (PBMutableField*) field;
+@interface PBMutableField : PBField
 
-- (PBMutableField*) mergeFromField:(PBField*) other;
++ (PBMutableField *)field;
 
-- (PBMutableField*) clear;
-- (PBMutableField*) mergeFromField:(PBField*) other;
-- (PBMutableField*) addVarint:(int64_t) value;
-- (PBMutableField*) addFixed32:(int32_t) value;
-- (PBMutableField*) addFixed64:(int64_t) value;
-- (PBMutableField*) addLengthDelimited:(NSData*) value;
-- (PBMutableField*) addGroup:(PBUnknownFieldSet*) value;
+- (PBMutableField *)mergeFromField:(PBField *)other;
+
+- (PBMutableField *)clear;
+- (PBMutableField *)addVarint:(int64_t)value;
+- (PBMutableField *)addFixed32:(int32_t)value;
+- (PBMutableField *)addFixed64:(int64_t)value;
+- (PBMutableField *)addLengthDelimited:(NSData *)value;
+- (PBMutableField *)addGroup:(PBUnknownFieldSet *)value;
 
 @end

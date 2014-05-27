@@ -3,8 +3,9 @@
 @implementation RingBuffer
 
 - (id)initWithData:(NSMutableData*)data {
-	if (![super init]) return nil;
-	buffer = [data retain];
+  if ((self = [super init])) {
+    buffer = [data retain];
+  }
 	return self;
 }
 
@@ -43,7 +44,7 @@
 	}
 	
 	// position < tail
-	int32_t written = MIN(freeSpace, length);
+	int32_t written = (int32_t)MIN(freeSpace, length);
 	memcpy(data + position, input + offset, written);
 	position += written;
 	totalWritten += written;
@@ -57,7 +58,7 @@
 	const uint8_t *data = buffer.bytes;
 	
 	if (tail > position) {
-		int32_t written = [stream write:data + tail maxLength:buffer.length - tail];
+		int32_t written = (int32_t)[stream write:data + tail maxLength:buffer.length - tail];
         if (written <= 0) return totalWritten;
         totalWritten += written;
 		tail += written;
@@ -67,7 +68,7 @@
 	}
 
 	if (tail < position) {
-		int32_t written = [stream write:data + tail maxLength:position - tail];
+		int32_t written = (int32_t)[stream write:data + tail maxLength:position - tail];
 		if (written <= 0) return totalWritten;
 		totalWritten += written;
 		tail += written;

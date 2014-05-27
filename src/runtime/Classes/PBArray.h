@@ -18,8 +18,6 @@
 
 #import <Foundation/Foundation.h>
 
-@class PBCodedInputStream;
-
 extern NSString * const PBArrayTypeMismatchException;
 extern NSString * const PBArrayNumberExpectedException;
 extern NSString * const PBArrayAllocationFailureException;
@@ -57,6 +55,7 @@ typedef enum _PBArrayValueType
 - (uint64_t)uint64AtIndex:(NSUInteger)index;
 - (Float32)floatAtIndex:(NSUInteger)index;
 - (Float64)doubleAtIndex:(NSUInteger)index;
+- (BOOL)isEqualToArray:(PBArray *)array;
 
 @property (nonatomic,assign,readonly) PBArrayValueType valueType;
 @property (nonatomic,assign,readonly) const void * data;
@@ -96,6 +95,5 @@ typedef enum _PBArrayValueType
 
 - (void)appendArray:(PBArray *)array;
 - (void)appendValues:(const void *)values count:(NSUInteger)count;
-- (void)appendInputStream:(PBCodedInputStream *)input;
 
 @end

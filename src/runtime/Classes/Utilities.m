@@ -16,6 +16,8 @@
 // limitations under the License.
 
 #import "Utilities.h"
+
+#import "UnknownFieldSet.h"
 #import "WireFormat.h"
 
 const int32_t LITTLE_ENDIAN_32_SIZE = 4;
@@ -70,7 +72,7 @@ uint32_t convertInt32ToUInt32(int32_t v) {
 }
 
 
-int64_t convertUInt32ToInt32(uint32_t v) {
+int32_t convertUInt32ToInt32(uint32_t v) {
   union { int32_t i; uint32_t u; } u;
   u.u = v;
   return u.i;
@@ -155,7 +157,7 @@ int32_t computeBoolSizeNoTag(BOOL value) {
 
 
 int32_t computeStringSizeNoTag(const NSString* value) {
-	const NSUInteger length = [value lengthOfBytesUsingEncoding:NSUTF8StringEncoding];
+	const int32_t length = (int32_t) [value lengthOfBytesUsingEncoding:NSUTF8StringEncoding];
 	return computeRawVarint32Size(length) + length;
 }
 
@@ -177,7 +179,7 @@ int32_t computeMessageSizeNoTag(const id<PBMessage> value) {
 
 
 int32_t computeDataSizeNoTag(const NSData* value) {
-	return computeRawVarint32Size(value.length) + value.length;
+	return computeRawVarint32Size((int32_t)value.length) + (int32_t)value.length;
 }
 
 

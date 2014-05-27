@@ -22,7 +22,7 @@ static PBExtensionRegistry* extensionRegistry = nil;
 
 @interface TestEmbedOptimizedForSize ()
 @property (retain) TestOptimizedForSize* optionalMessage;
-@property (retain) NSMutableArray* mutableRepeatedMessageList;
+@property (retain) PBAppendableArray * repeatedMessageArray;
 @end
 
 @implementation TestEmbedOptimizedForSize
@@ -34,10 +34,11 @@ static PBExtensionRegistry* extensionRegistry = nil;
   hasOptionalMessage_ = !!value;
 }
 @synthesize optionalMessage;
-@synthesize mutableRepeatedMessageList;
+@synthesize repeatedMessageArray;
+@dynamic repeatedMessage;
 - (void) dealloc {
   self.optionalMessage = nil;
-  self.mutableRepeatedMessageList = nil;
+  self.repeatedMessageArray = nil;
   [super dealloc];
 }
 - (id) init {
@@ -58,12 +59,11 @@ static TestEmbedOptimizedForSize* defaultTestEmbedOptimizedForSizeInstance = nil
 - (TestEmbedOptimizedForSize*) defaultInstance {
   return defaultTestEmbedOptimizedForSizeInstance;
 }
-- (NSArray*) repeatedMessageList {
-  return mutableRepeatedMessageList;
+- (PBArray *)repeatedMessage {
+  return repeatedMessageArray;
 }
-- (TestOptimizedForSize*) repeatedMessageAtIndex:(int32_t) index {
-  id value = [mutableRepeatedMessageList objectAtIndex:index];
-  return value;
+- (TestOptimizedForSize*)repeatedMessageAtIndex:(NSUInteger)index {
+  return [repeatedMessageArray objectAtIndex:index];
 }
 - (BOOL) isInitialized {
   if (self.hasOptionalMessage) {
@@ -71,7 +71,7 @@ static TestEmbedOptimizedForSize* defaultTestEmbedOptimizedForSizeInstance = nil
       return NO;
     }
   }
-  for (TestOptimizedForSize* element in self.repeatedMessageList) {
+  for (TestOptimizedForSize* element in self.repeatedMessage) {
     if (!element.isInitialized) {
       return NO;
     }
@@ -82,7 +82,7 @@ static TestEmbedOptimizedForSize* defaultTestEmbedOptimizedForSizeInstance = nil
   if (self.hasOptionalMessage) {
     [output writeMessage:1 value:self.optionalMessage];
   }
-  for (TestOptimizedForSize* element in self.repeatedMessageList) {
+  for (TestOptimizedForSize *element in self.repeatedMessageArray) {
     [output writeMessage:2 value:element];
   }
   [self.unknownFields writeToCodedOutputStream:output];
@@ -97,7 +97,7 @@ static TestEmbedOptimizedForSize* defaultTestEmbedOptimizedForSizeInstance = nil
   if (self.hasOptionalMessage) {
     size += computeMessageSize(1, self.optionalMessage);
   }
-  for (TestOptimizedForSize* element in self.repeatedMessageList) {
+  for (TestOptimizedForSize *element in self.repeatedMessageArray) {
     size += computeMessageSize(2, element);
   }
   size += self.unknownFields.serializedSize;
@@ -130,6 +130,51 @@ static TestEmbedOptimizedForSize* defaultTestEmbedOptimizedForSizeInstance = nil
 }
 - (TestEmbedOptimizedForSize_Builder*) builder {
   return [TestEmbedOptimizedForSize builder];
+}
+- (TestEmbedOptimizedForSize_Builder*) toBuilder {
+  return [TestEmbedOptimizedForSize builderWithPrototype:self];
+}
+- (void) writeDescriptionTo:(NSMutableString*) output withIndent:(NSString*) indent {
+  if (self.hasOptionalMessage) {
+    [output appendFormat:@"%@%@ {\n", indent, @"optionalMessage"];
+    [self.optionalMessage writeDescriptionTo:output
+                         withIndent:[NSString stringWithFormat:@"%@  ", indent]];
+    [output appendFormat:@"%@}\n", indent];
+  }
+  for (TestOptimizedForSize* element in self.repeatedMessageArray) {
+    [output appendFormat:@"%@%@ {\n", indent, @"repeatedMessage"];
+    [element writeDescriptionTo:output
+                     withIndent:[NSString stringWithFormat:@"%@  ", indent]];
+    [output appendFormat:@"%@}\n", indent];
+  }
+  [self.unknownFields writeDescriptionTo:output withIndent:indent];
+}
+- (BOOL) isEqual:(id)other {
+  if (other == self) {
+    return YES;
+  }
+  if (![other isKindOfClass:[TestEmbedOptimizedForSize class]]) {
+    return NO;
+  }
+  TestEmbedOptimizedForSize *otherMessage = other;
+  return
+      self.hasOptionalMessage == otherMessage.hasOptionalMessage &&
+      (!self.hasOptionalMessage || [self.optionalMessage isEqual:otherMessage.optionalMessage]) &&
+      
+      [self.repeatedMessageArray isEqualToArray:otherMessage.repeatedMessageArray] &&
+      
+      (self.unknownFields == otherMessage.unknownFields || (self.unknownFields != nil && [self.unknownFields isEqual:otherMessage.unknownFields]));
+}
+- (NSUInteger) hash {
+  NSUInteger hashCode = 7;
+  if (self.hasOptionalMessage) {
+    hashCode = hashCode * 31 + [self.optionalMessage hash];
+  }
+  for (TestOptimizedForSize* element in self.repeatedMessageArray) {
+    hashCode = hashCode * 31 + [element hash];
+  }
+  hashCode = hashCode * 31 + [self.unknownFields hash];
+  return hashCode;
 }
 @end
 
@@ -178,11 +223,12 @@ static TestEmbedOptimizedForSize* defaultTestEmbedOptimizedForSizeInstance = nil
   if (other.hasOptionalMessage) {
     [self mergeOptionalMessage:other.optionalMessage];
   }
-  if (other.mutableRepeatedMessageList.count > 0) {
-    if (result.mutableRepeatedMessageList == nil) {
-      result.mutableRepeatedMessageList = [NSMutableArray array];
+  if (other.repeatedMessageArray.count > 0) {
+    if (result.repeatedMessageArray == nil) {
+      result.repeatedMessageArray = [[other.repeatedMessageArray copyWithZone:[other.repeatedMessageArray zone]] autorelease];
+    } else {
+      [result.repeatedMessageArray appendArray:other.repeatedMessageArray];
     }
-    [result.mutableRepeatedMessageList addObjectsFromArray:other.mutableRepeatedMessageList];
   }
   [self mergeUnknownFields:other.unknownFields];
   return self;
@@ -253,33 +299,29 @@ static TestEmbedOptimizedForSize* defaultTestEmbedOptimizedForSizeInstance = nil
   result.optionalMessage = [TestOptimizedForSize defaultInstance];
   return self;
 }
-- (NSArray*) repeatedMessageList {
-  if (result.mutableRepeatedMessageList == nil) { return [NSArray array]; }
-  return result.mutableRepeatedMessageList;
+- (PBAppendableArray *)repeatedMessage {
+  return result.repeatedMessageArray;
 }
-- (TestOptimizedForSize*) repeatedMessageAtIndex:(int32_t) index {
+- (TestOptimizedForSize*)repeatedMessageAtIndex:(NSUInteger)index {
   return [result repeatedMessageAtIndex:index];
 }
-- (TestEmbedOptimizedForSize_Builder*) replaceRepeatedMessageAtIndex:(int32_t) index with:(TestOptimizedForSize*) value {
-  [result.mutableRepeatedMessageList replaceObjectAtIndex:index withObject:value];
-  return self;
-}
-- (TestEmbedOptimizedForSize_Builder*) addAllRepeatedMessage:(NSArray*) values {
-  if (result.mutableRepeatedMessageList == nil) {
-    result.mutableRepeatedMessageList = [NSMutableArray array];
+- (TestEmbedOptimizedForSize_Builder *)addRepeatedMessage:(TestOptimizedForSize*)value {
+  if (result.repeatedMessageArray == nil) {
+    result.repeatedMessageArray = [PBAppendableArray arrayWithValueType:PBArrayValueTypeObject];
   }
-  [result.mutableRepeatedMessageList addObjectsFromArray:values];
+  [result.repeatedMessageArray addObject:value];
   return self;
 }
-- (TestEmbedOptimizedForSize_Builder*) clearRepeatedMessageList {
-  result.mutableRepeatedMessageList = nil;
+- (TestEmbedOptimizedForSize_Builder *)setRepeatedMessageArray:(NSArray *)array {
+  result.repeatedMessageArray = [PBAppendableArray arrayWithArray:array valueType:PBArrayValueTypeObject];
   return self;
 }
-- (TestEmbedOptimizedForSize_Builder*) addRepeatedMessage:(TestOptimizedForSize*) value {
-  if (result.mutableRepeatedMessageList == nil) {
-    result.mutableRepeatedMessageList = [NSMutableArray array];
-  }
-  [result.mutableRepeatedMessageList addObject:value];
+- (TestEmbedOptimizedForSize_Builder *)setRepeatedMessageValues:(const TestOptimizedForSize* *)values count:(NSUInteger)count {
+  result.repeatedMessageArray = [PBAppendableArray arrayWithValues:values count:count valueType:PBArrayValueTypeObject];
+  return self;
+}
+- (TestEmbedOptimizedForSize_Builder *)clearRepeatedMessage {
+  result.repeatedMessageArray = nil;
   return self;
 }
 @end

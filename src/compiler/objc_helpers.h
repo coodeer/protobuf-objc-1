@@ -45,7 +45,10 @@ string FilenameToCamelCase(const string& filename);
 // Strips ".proto" or ".protodevel" from the end of a filename.
 string StripProto(const string& filename);
 
-//
+// Returns true if the name requires a ns_returns_not_retained attribute applied
+// to it.
+bool IsRetainedName(const string& name);
+
 bool IsBootstrapFile(const FileDescriptor* file);
 
 // Gets the name of the file we're going to generate (sans the .pb.h
@@ -105,6 +108,9 @@ string DefaultValue(const FieldDescriptor* field);
 string BoxValue(const FieldDescriptor* field, const string& value);
 
 const char* GetArrayValueType(const FieldDescriptor* field);
+
+// Escape C++ trigraphs by escaping question marks to \?
+string EscapeTrigraphs(const string& to_escape);
 
 // Do message classes in this file keep track of unknown fields?
 inline bool HasUnknownFields(const FileDescriptor *file) {

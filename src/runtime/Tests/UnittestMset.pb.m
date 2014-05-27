@@ -18,18 +18,18 @@ static PBExtensionRegistry* extensionRegistry = nil;
                                        fieldNumber:1545008
                                       defaultValue:[TestMessageSetExtension1 defaultInstance]
                                messageOrGroupClass:[TestMessageSetExtension1 class]
-                                        isRepeated:false
-                                          isPacked:false
-                            isMessageSetWireFormat:true] retain];
+                                        isRepeated:NO
+                                          isPacked:NO
+                            isMessageSetWireFormat:YES] retain];
     TestMessageSetExtension2_messageSetExtension =
       [[PBConcreteExtensionField extensionWithType:PBExtensionTypeMessage
                                      extendedClass:[TestMessageSet class]
                                        fieldNumber:1547769
                                       defaultValue:[TestMessageSetExtension2 defaultInstance]
                                messageOrGroupClass:[TestMessageSetExtension2 class]
-                                        isRepeated:false
-                                          isPacked:false
-                            isMessageSetWireFormat:true] retain];
+                                        isRepeated:NO
+                                          isPacked:NO
+                            isMessageSetWireFormat:YES] retain];
     PBMutableExtensionRegistry* registry = [PBMutableExtensionRegistry registry];
     [self registerAllExtensions:registry];
     extensionRegistry = [registry retain];
@@ -116,6 +116,35 @@ static TestMessageSet* defaultTestMessageSetInstance = nil;
 }
 - (TestMessageSet_Builder*) builder {
   return [TestMessageSet builder];
+}
+- (TestMessageSet_Builder*) toBuilder {
+  return [TestMessageSet builderWithPrototype:self];
+}
+- (void) writeDescriptionTo:(NSMutableString*) output withIndent:(NSString*) indent {
+  [self writeExtensionDescriptionToMutableString:(NSMutableString*)output
+                                            from:4
+                                              to:536870912
+                                      withIndent:indent];
+  [self.unknownFields writeDescriptionTo:output withIndent:indent];
+}
+- (BOOL) isEqual:(id)other {
+  if (other == self) {
+    return YES;
+  }
+  if (![other isKindOfClass:[TestMessageSet class]]) {
+    return NO;
+  }
+  TestMessageSet *otherMessage = other;
+  return
+      [self isEqualExtensionsInOther:otherMessage from:4 to:536870912] &&
+      
+      (self.unknownFields == otherMessage.unknownFields || (self.unknownFields != nil && [self.unknownFields isEqual:otherMessage.unknownFields]));
+}
+- (NSUInteger) hash {
+  NSUInteger hashCode = 7;
+  hashCode = hashCode * 31 + [self hashExtensionsFrom:4 to:536870912];
+  hashCode = hashCode * 31 + [self.unknownFields hash];
+  return hashCode;
 }
 @end
 
@@ -277,6 +306,40 @@ static TestMessageSetContainer* defaultTestMessageSetContainerInstance = nil;
 }
 - (TestMessageSetContainer_Builder*) builder {
   return [TestMessageSetContainer builder];
+}
+- (TestMessageSetContainer_Builder*) toBuilder {
+  return [TestMessageSetContainer builderWithPrototype:self];
+}
+- (void) writeDescriptionTo:(NSMutableString*) output withIndent:(NSString*) indent {
+  if (self.hasMessageSet) {
+    [output appendFormat:@"%@%@ {\n", indent, @"messageSet"];
+    [self.messageSet writeDescriptionTo:output
+                         withIndent:[NSString stringWithFormat:@"%@  ", indent]];
+    [output appendFormat:@"%@}\n", indent];
+  }
+  [self.unknownFields writeDescriptionTo:output withIndent:indent];
+}
+- (BOOL) isEqual:(id)other {
+  if (other == self) {
+    return YES;
+  }
+  if (![other isKindOfClass:[TestMessageSetContainer class]]) {
+    return NO;
+  }
+  TestMessageSetContainer *otherMessage = other;
+  return
+      self.hasMessageSet == otherMessage.hasMessageSet &&
+      (!self.hasMessageSet || [self.messageSet isEqual:otherMessage.messageSet]) &&
+      
+      (self.unknownFields == otherMessage.unknownFields || (self.unknownFields != nil && [self.unknownFields isEqual:otherMessage.unknownFields]));
+}
+- (NSUInteger) hash {
+  NSUInteger hashCode = 7;
+  if (self.hasMessageSet) {
+    hashCode = hashCode * 31 + [self.messageSet hash];
+  }
+  hashCode = hashCode * 31 + [self.unknownFields hash];
+  return hashCode;
 }
 @end
 
@@ -477,6 +540,37 @@ static TestMessageSetExtension1* defaultTestMessageSetExtension1Instance = nil;
 - (TestMessageSetExtension1_Builder*) builder {
   return [TestMessageSetExtension1 builder];
 }
+- (TestMessageSetExtension1_Builder*) toBuilder {
+  return [TestMessageSetExtension1 builderWithPrototype:self];
+}
+- (void) writeDescriptionTo:(NSMutableString*) output withIndent:(NSString*) indent {
+  if (self.hasI) {
+    [output appendFormat:@"%@%@: %@\n", indent, @"i", [NSNumber numberWithInt:self.i]];
+  }
+  [self.unknownFields writeDescriptionTo:output withIndent:indent];
+}
+- (BOOL) isEqual:(id)other {
+  if (other == self) {
+    return YES;
+  }
+  if (![other isKindOfClass:[TestMessageSetExtension1 class]]) {
+    return NO;
+  }
+  TestMessageSetExtension1 *otherMessage = other;
+  return
+      self.hasI == otherMessage.hasI &&
+      (!self.hasI || self.i == otherMessage.i) &&
+      
+      (self.unknownFields == otherMessage.unknownFields || (self.unknownFields != nil && [self.unknownFields isEqual:otherMessage.unknownFields]));
+}
+- (NSUInteger) hash {
+  NSUInteger hashCode = 7;
+  if (self.hasI) {
+    hashCode = hashCode * 31 + [[NSNumber numberWithInt:self.i] hash];
+  }
+  hashCode = hashCode * 31 + [self.unknownFields hash];
+  return hashCode;
+}
 @end
 
 @interface TestMessageSetExtension1_Builder()
@@ -658,6 +752,37 @@ static TestMessageSetExtension2* defaultTestMessageSetExtension2Instance = nil;
 - (TestMessageSetExtension2_Builder*) builder {
   return [TestMessageSetExtension2 builder];
 }
+- (TestMessageSetExtension2_Builder*) toBuilder {
+  return [TestMessageSetExtension2 builderWithPrototype:self];
+}
+- (void) writeDescriptionTo:(NSMutableString*) output withIndent:(NSString*) indent {
+  if (self.hasStr) {
+    [output appendFormat:@"%@%@: %@\n", indent, @"str", self.str];
+  }
+  [self.unknownFields writeDescriptionTo:output withIndent:indent];
+}
+- (BOOL) isEqual:(id)other {
+  if (other == self) {
+    return YES;
+  }
+  if (![other isKindOfClass:[TestMessageSetExtension2 class]]) {
+    return NO;
+  }
+  TestMessageSetExtension2 *otherMessage = other;
+  return
+      self.hasStr == otherMessage.hasStr &&
+      (!self.hasStr || [self.str isEqual:otherMessage.str]) &&
+      
+      (self.unknownFields == otherMessage.unknownFields || (self.unknownFields != nil && [self.unknownFields isEqual:otherMessage.unknownFields]));
+}
+- (NSUInteger) hash {
+  NSUInteger hashCode = 7;
+  if (self.hasStr) {
+    hashCode = hashCode * 31 + [self.str hash];
+  }
+  hashCode = hashCode * 31 + [self.unknownFields hash];
+  return hashCode;
+}
 @end
 
 @interface TestMessageSetExtension2_Builder()
@@ -752,14 +877,15 @@ static TestMessageSetExtension2* defaultTestMessageSetExtension2Instance = nil;
 @end
 
 @interface RawMessageSet ()
-@property (retain) NSMutableArray* mutableItemList;
+@property (retain) PBAppendableArray * itemArray;
 @end
 
 @implementation RawMessageSet
 
-@synthesize mutableItemList;
+@synthesize itemArray;
+@dynamic item;
 - (void) dealloc {
-  self.mutableItemList = nil;
+  self.itemArray = nil;
   [super dealloc];
 }
 - (id) init {
@@ -779,15 +905,14 @@ static RawMessageSet* defaultRawMessageSetInstance = nil;
 - (RawMessageSet*) defaultInstance {
   return defaultRawMessageSetInstance;
 }
-- (NSArray*) itemList {
-  return mutableItemList;
+- (PBArray *)item {
+  return itemArray;
 }
-- (RawMessageSet_Item*) itemAtIndex:(int32_t) index {
-  id value = [mutableItemList objectAtIndex:index];
-  return value;
+- (RawMessageSet_Item*)itemAtIndex:(NSUInteger)index {
+  return [itemArray objectAtIndex:index];
 }
 - (BOOL) isInitialized {
-  for (RawMessageSet_Item* element in self.itemList) {
+  for (RawMessageSet_Item* element in self.item) {
     if (!element.isInitialized) {
       return NO;
     }
@@ -795,7 +920,7 @@ static RawMessageSet* defaultRawMessageSetInstance = nil;
   return YES;
 }
 - (void) writeToCodedOutputStream:(PBCodedOutputStream*) output {
-  for (RawMessageSet_Item* element in self.itemList) {
+  for (RawMessageSet_Item *element in self.itemArray) {
     [output writeGroup:1 value:element];
   }
   [self.unknownFields writeToCodedOutputStream:output];
@@ -807,7 +932,7 @@ static RawMessageSet* defaultRawMessageSetInstance = nil;
   }
 
   size = 0;
-  for (RawMessageSet_Item* element in self.itemList) {
+  for (RawMessageSet_Item *element in self.itemArray) {
     size += computeGroupSize(1, element);
   }
   size += self.unknownFields.serializedSize;
@@ -840,6 +965,39 @@ static RawMessageSet* defaultRawMessageSetInstance = nil;
 }
 - (RawMessageSet_Builder*) builder {
   return [RawMessageSet builder];
+}
+- (RawMessageSet_Builder*) toBuilder {
+  return [RawMessageSet builderWithPrototype:self];
+}
+- (void) writeDescriptionTo:(NSMutableString*) output withIndent:(NSString*) indent {
+  for (RawMessageSet_Item* element in self.itemArray) {
+    [output appendFormat:@"%@%@ {\n", indent, @"item"];
+    [element writeDescriptionTo:output
+                     withIndent:[NSString stringWithFormat:@"%@  ", indent]];
+    [output appendFormat:@"%@}\n", indent];
+  }
+  [self.unknownFields writeDescriptionTo:output withIndent:indent];
+}
+- (BOOL) isEqual:(id)other {
+  if (other == self) {
+    return YES;
+  }
+  if (![other isKindOfClass:[RawMessageSet class]]) {
+    return NO;
+  }
+  RawMessageSet *otherMessage = other;
+  return
+      [self.itemArray isEqualToArray:otherMessage.itemArray] &&
+      
+      (self.unknownFields == otherMessage.unknownFields || (self.unknownFields != nil && [self.unknownFields isEqual:otherMessage.unknownFields]));
+}
+- (NSUInteger) hash {
+  NSUInteger hashCode = 7;
+  for (RawMessageSet_Item* element in self.itemArray) {
+    hashCode = hashCode * 31 + [element hash];
+  }
+  hashCode = hashCode * 31 + [self.unknownFields hash];
+  return hashCode;
 }
 @end
 
@@ -948,6 +1106,46 @@ static RawMessageSet_Item* defaultRawMessageSet_ItemInstance = nil;
 }
 - (RawMessageSet_Item_Builder*) builder {
   return [RawMessageSet_Item builder];
+}
+- (RawMessageSet_Item_Builder*) toBuilder {
+  return [RawMessageSet_Item builderWithPrototype:self];
+}
+- (void) writeDescriptionTo:(NSMutableString*) output withIndent:(NSString*) indent {
+  if (self.hasTypeId) {
+    [output appendFormat:@"%@%@: %@\n", indent, @"typeId", [NSNumber numberWithInt:self.typeId]];
+  }
+  if (self.hasMessage) {
+    [output appendFormat:@"%@%@: %@\n", indent, @"message", self.message];
+  }
+  [self.unknownFields writeDescriptionTo:output withIndent:indent];
+}
+- (BOOL) isEqual:(id)other {
+  if (other == self) {
+    return YES;
+  }
+  if (![other isKindOfClass:[RawMessageSet_Item class]]) {
+    return NO;
+  }
+  RawMessageSet_Item *otherMessage = other;
+  return
+      self.hasTypeId == otherMessage.hasTypeId &&
+      (!self.hasTypeId || self.typeId == otherMessage.typeId) &&
+      
+      self.hasMessage == otherMessage.hasMessage &&
+      (!self.hasMessage || [self.message isEqual:otherMessage.message]) &&
+      
+      (self.unknownFields == otherMessage.unknownFields || (self.unknownFields != nil && [self.unknownFields isEqual:otherMessage.unknownFields]));
+}
+- (NSUInteger) hash {
+  NSUInteger hashCode = 7;
+  if (self.hasTypeId) {
+    hashCode = hashCode * 31 + [[NSNumber numberWithInt:self.typeId] hash];
+  }
+  if (self.hasMessage) {
+    hashCode = hashCode * 31 + [self.message hash];
+  }
+  hashCode = hashCode * 31 + [self.unknownFields hash];
+  return hashCode;
 }
 @end
 
@@ -1107,11 +1305,12 @@ static RawMessageSet_Item* defaultRawMessageSet_ItemInstance = nil;
   if (other == [RawMessageSet defaultInstance]) {
     return self;
   }
-  if (other.mutableItemList.count > 0) {
-    if (result.mutableItemList == nil) {
-      result.mutableItemList = [NSMutableArray array];
+  if (other.itemArray.count > 0) {
+    if (result.itemArray == nil) {
+      result.itemArray = [[other.itemArray copyWithZone:[other.itemArray zone]] autorelease];
+    } else {
+      [result.itemArray appendArray:other.itemArray];
     }
-    [result.mutableItemList addObjectsFromArray:other.mutableItemList];
   }
   [self mergeUnknownFields:other.unknownFields];
   return self;
@@ -1143,33 +1342,29 @@ static RawMessageSet_Item* defaultRawMessageSet_ItemInstance = nil;
     }
   }
 }
-- (NSArray*) itemList {
-  if (result.mutableItemList == nil) { return [NSArray array]; }
-  return result.mutableItemList;
+- (PBAppendableArray *)item {
+  return result.itemArray;
 }
-- (RawMessageSet_Item*) itemAtIndex:(int32_t) index {
+- (RawMessageSet_Item*)itemAtIndex:(NSUInteger)index {
   return [result itemAtIndex:index];
 }
-- (RawMessageSet_Builder*) replaceItemAtIndex:(int32_t) index with:(RawMessageSet_Item*) value {
-  [result.mutableItemList replaceObjectAtIndex:index withObject:value];
-  return self;
-}
-- (RawMessageSet_Builder*) addAllItem:(NSArray*) values {
-  if (result.mutableItemList == nil) {
-    result.mutableItemList = [NSMutableArray array];
+- (RawMessageSet_Builder *)addItem:(RawMessageSet_Item*)value {
+  if (result.itemArray == nil) {
+    result.itemArray = [PBAppendableArray arrayWithValueType:PBArrayValueTypeObject];
   }
-  [result.mutableItemList addObjectsFromArray:values];
+  [result.itemArray addObject:value];
   return self;
 }
-- (RawMessageSet_Builder*) clearItemList {
-  result.mutableItemList = nil;
+- (RawMessageSet_Builder *)setItemArray:(NSArray *)array {
+  result.itemArray = [PBAppendableArray arrayWithArray:array valueType:PBArrayValueTypeObject];
   return self;
 }
-- (RawMessageSet_Builder*) addItem:(RawMessageSet_Item*) value {
-  if (result.mutableItemList == nil) {
-    result.mutableItemList = [NSMutableArray array];
-  }
-  [result.mutableItemList addObject:value];
+- (RawMessageSet_Builder *)setItemValues:(const RawMessageSet_Item* *)values count:(NSUInteger)count {
+  result.itemArray = [PBAppendableArray arrayWithValues:values count:count valueType:PBArrayValueTypeObject];
+  return self;
+}
+- (RawMessageSet_Builder *)clearItem {
+  result.itemArray = nil;
   return self;
 }
 @end

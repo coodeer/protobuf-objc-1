@@ -17,6 +17,12 @@
 
 #import "WireFormat.h"
 
+@class PBCodedInputStream;
+@class PBCodedOutputStream;
+@class PBExtendableMessage_Builder;
+@class PBExtensionRegistry;
+@class PBUnknownFieldSet_Builder;
+
 @protocol PBExtensionField
 - (int32_t) fieldNumber;
 - (PBWireFormat) wireType;
@@ -31,4 +37,7 @@
                                tag:(int32_t) tag;
 - (void) writeValue:(id) value includingTagToCodedOutputStream:(PBCodedOutputStream*) output;
 - (int32_t) computeSerializedSizeIncludingTag:(id) value;
+- (void) writeDescriptionOf:(id) value
+                         to:(NSMutableString*) output
+                 withIndent:(NSString*) indent;
 @end
