@@ -15,7 +15,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#import <SenTestingKit/SenTestingKit.h>
+#import <XCTest/XCTest.h>
 
 @class TestAllExtensions;
 @class TestAllExtensions_Builder;
@@ -28,7 +28,7 @@
 @class PBExtensionRegistry;
 @class PBMutableExtensionRegistry;
 
-@interface TestUtilities : SenTestCase {
+@interface TestUtilities : XCTestCase {
 }
 
 + (void) setAllFields:(TestAllTypes_Builder*) message;

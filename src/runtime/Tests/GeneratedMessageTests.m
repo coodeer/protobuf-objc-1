@@ -23,9 +23,9 @@
 @implementation GeneratedMessageTests
 
 - (void) testDefaultInstance {
-  STAssertTrue([TestAllTypes defaultInstance] ==
+  XCTAssertTrue([TestAllTypes defaultInstance] ==
                [[TestAllTypes defaultInstance] defaultInstance], @"");
-  STAssertTrue([TestAllTypes defaultInstance] ==
+  XCTAssertTrue([TestAllTypes defaultInstance] ==
                [[TestAllTypes builder] defaultInstance], @"");
 }
 
@@ -57,8 +57,8 @@
   [builder setRepeatedForeignMessageArray:[NSArray arrayWithObject:foreignMessage]];
 
   TestAllTypes* message = [builder build];
-  STAssertTrue(1 == message.repeatedForeignMessage.count, @"");
-  STAssertTrue(12 == [[message repeatedForeignMessageAtIndex:0] c], @"");
+  XCTAssertTrue(1 == message.repeatedForeignMessage.count, @"");
+  XCTAssertTrue(12 == [[message repeatedForeignMessageAtIndex:0] c], @"");
 }
 
 
@@ -68,17 +68,17 @@
   [[TestAllExtensions builder]
    setExtension:[UnittestRoot optionalInt32Extension] value:[NSNumber numberWithInt:1]];
 
-  STAssertTrue([builder1 hasExtension:[UnittestRoot optionalInt32Extension]], @"");
+  XCTAssertTrue([builder1 hasExtension:[UnittestRoot optionalInt32Extension]], @"");
   [builder1 clearExtension:[UnittestRoot optionalInt32Extension]];
-  STAssertFalse([builder1 hasExtension:[UnittestRoot optionalInt32Extension]], @"");
+  XCTAssertFalse([builder1 hasExtension:[UnittestRoot optionalInt32Extension]], @"");
 
   PBExtendableMessage_Builder* builder2 =
   [[TestAllExtensions builder]
    addExtension:[UnittestRoot repeatedInt32Extension] value:[NSNumber numberWithInt:1]];
 
-  STAssertTrue(1 == [[builder2 getExtension:[UnittestRoot repeatedInt32Extension]] count], @"");
+  XCTAssertTrue(1 == [[builder2 getExtension:[UnittestRoot repeatedInt32Extension]] count], @"");
   [builder2 clearExtension:[UnittestRoot repeatedInt32Extension]];
-  STAssertTrue(0 == [[builder2 getExtension:[UnittestRoot repeatedInt32Extension]] count], @"");
+  XCTAssertTrue(0 == [[builder2 getExtension:[UnittestRoot repeatedInt32Extension]] count], @"");
 }
 
 
