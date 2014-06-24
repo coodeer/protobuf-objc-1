@@ -72,7 +72,7 @@ namespace google { namespace protobuf { namespace compiler { namespace objective
 
 
   void MessageFieldGenerator::GenerateFieldHeader(io::Printer* printer) const {
-    printer->Print(variables_, "$storage_type$ $name$$storage_attribute$;\n");
+    printer->Print(variables_, "$storage_type$ $name$;\n");
   }
 
 
@@ -121,7 +121,7 @@ namespace google { namespace protobuf { namespace compiler { namespace objective
   void MessageFieldGenerator::GenerateBuilderMembersHeader(io::Printer* printer) const {
     printer->Print(variables_,
       "- (BOOL) has$capitalized_name$;\n"
-      "- ($storage_type$) $name$;\n"
+      "- ($storage_type$) $name$$storage_attribute$;\n"
       "- ($classname$_Builder*) set$capitalized_name$:($storage_type$) value;\n"
       "- ($classname$_Builder*) set$capitalized_name$Builder:($type$_Builder*) builderForValue;\n"
       "- ($classname$_Builder*) merge$capitalized_name$:($storage_type$) value;\n"
