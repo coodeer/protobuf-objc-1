@@ -38,6 +38,11 @@ namespace google { namespace protobuf { namespace compiler { namespace objective
         (*variables)["list_name"] = UnderscoresToCamelCase(descriptor) + "Array";
         (*variables)["number"] = SimpleItoa(descriptor->number());
         (*variables)["type"] = ClassName(descriptor->message_type());
+        if (descriptor->options().deprecated()) {
+            (*variables)["deprecated_attribute"] =  " DEPRECATED_ATTRIBUTE";
+        } else {
+            (*variables)["deprecated_attribute"] =  "";
+        }
         if (IsPrimitiveType(GetObjectiveCType(descriptor))) {
           (*variables)["storage_type"] = ClassName(descriptor->message_type());
           (*variables)["storage_attribute"] = "";
@@ -77,12 +82,13 @@ namespace google { namespace protobuf { namespace compiler { namespace objective
 
 
   void MessageFieldGenerator::GenerateHasPropertyHeader(io::Printer* printer) const {
-    printer->Print(variables_, "- (BOOL) has$capitalized_name$;\n");
+    printer->Print(variables_, "- (BOOL) has$capitalized_name$$deprecated_attribute$;\n");
   }
 
 
   void MessageFieldGenerator::GeneratePropertyHeader(io::Printer* printer) const {
-    printer->Print(variables_, "@property (readonly, retain)$storage_attribute$ $storage_type$ $name$;\n");
+    printer->Print(variables_, "@property (readonly, retain)"
+                   "$storage_attribute$ $storage_type$ $name$$deprecated_attribute$;\n");
   }
 
 
@@ -120,12 +126,12 @@ namespace google { namespace protobuf { namespace compiler { namespace objective
 
   void MessageFieldGenerator::GenerateBuilderMembersHeader(io::Printer* printer) const {
     printer->Print(variables_,
-      "- (BOOL) has$capitalized_name$;\n"
-      "- ($storage_type$) $name$$storage_attribute$;\n"
-      "- ($classname$_Builder*) set$capitalized_name$:($storage_type$) value;\n"
-      "- ($classname$_Builder*) set$capitalized_name$Builder:($type$_Builder*) builderForValue;\n"
-      "- ($classname$_Builder*) merge$capitalized_name$:($storage_type$) value;\n"
-      "- ($classname$_Builder*) clear$capitalized_name$;\n");
+      "- (BOOL) has$capitalized_name$$deprecated_attribute$;\n"
+      "- ($storage_type$) $name$$storage_attribute$$deprecated_attribute$;\n"
+      "- ($classname$_Builder*) set$capitalized_name$:($storage_type$) value$deprecated_attribute$;\n"
+      "- ($classname$_Builder*) set$capitalized_name$Builder:($type$_Builder*) builderForValue$deprecated_attribute$;\n"
+      "- ($classname$_Builder*) merge$capitalized_name$:($storage_type$) value$deprecated_attribute$;\n"
+      "- ($classname$_Builder*) clear$capitalized_name$$deprecated_attribute$;\n");
   }
 
   void MessageFieldGenerator::GenerateBuilderMembersSource(io::Printer* printer) const {
@@ -290,7 +296,7 @@ namespace google { namespace protobuf { namespace compiler { namespace objective
 
 
   void RepeatedMessageFieldGenerator::GeneratePropertyHeader(io::Printer* printer) const {
-    printer->Print(variables_, "@property (readonly, retain) PBArray * $name$;\n");
+    printer->Print(variables_, "@property (readonly, retain) PBArray * $name$$deprecated_attribute$;\n");
   }
 
 
@@ -318,7 +324,7 @@ namespace google { namespace protobuf { namespace compiler { namespace objective
 
   void RepeatedMessageFieldGenerator::GenerateMembersHeader(io::Printer* printer) const {
     printer->Print(variables_,
-      "- ($storage_type$)$name$AtIndex:(NSUInteger)index;\n");
+      "- ($storage_type$)$name$AtIndex:(NSUInteger)index$deprecated_attribute$;\n");
   }
 
   void RepeatedMessageFieldGenerator::GenerateMembersSource(io::Printer* printer) const {
@@ -334,12 +340,12 @@ namespace google { namespace protobuf { namespace compiler { namespace objective
 
   void RepeatedMessageFieldGenerator::GenerateBuilderMembersHeader(io::Printer* printer) const {
     printer->Print(variables_,
-      "- (PBAppendableArray *)$name$;\n"
-      "- ($storage_type$)$name$AtIndex:(NSUInteger)index;\n"
-      "- ($classname$_Builder *)add$capitalized_name$:($storage_type$)value;\n"
-      "- ($classname$_Builder *)set$capitalized_name$Array:(NSArray *)array;\n"
-      "- ($classname$_Builder *)set$capitalized_name$Values:(const $storage_type$ *)values count:(NSUInteger)count;\n"
-      "- ($classname$_Builder *)clear$capitalized_name$;\n");
+      "- (PBAppendableArray *)$name$$deprecated_attribute$;\n"
+      "- ($storage_type$)$name$AtIndex:(NSUInteger)index$deprecated_attribute$;\n"
+      "- ($classname$_Builder *)add$capitalized_name$:($storage_type$)value$deprecated_attribute$;\n"
+      "- ($classname$_Builder *)set$capitalized_name$Array:(NSArray *)array$deprecated_attribute$;\n"
+      "- ($classname$_Builder *)set$capitalized_name$Values:(const $storage_type$ *)values count:(NSUInteger)count$deprecated_attribute$;\n"
+      "- ($classname$_Builder *)clear$capitalized_name$$deprecated_attribute$;\n");
   }
 
   void RepeatedMessageFieldGenerator::GenerateBuilderMembersSource(io::Printer* printer) const {

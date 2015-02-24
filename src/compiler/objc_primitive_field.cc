@@ -192,6 +192,12 @@ namespace google { namespace protobuf { namespace compiler { namespace objective
           }
         }
 
+        if (descriptor->options().deprecated()) {
+            (*variables)["deprecated_attribute"] = " DEPRECATED_ATTRIBUTE";
+        } else {
+            (*variables)["deprecated_attribute"] = "";
+        }
+        
         (*variables)["array_value_type"] = GetArrayValueType(descriptor);
         (*variables)["array_value_type_name"] = GetArrayValueTypeName(descriptor);
         (*variables)["array_value_type_name_cap"] = GetCapitalizedArrayValueTypeName(descriptor);
@@ -236,19 +242,19 @@ namespace google { namespace protobuf { namespace compiler { namespace objective
 
 
   void PrimitiveFieldGenerator::GenerateHasPropertyHeader(io::Printer* printer) const {
-    printer->Print(variables_, "- (BOOL) has$capitalized_name$;\n");
+    printer->Print(variables_, "- (BOOL) has$capitalized_name$$deprecated_attribute$;\n");
   }
 
   void PrimitiveFieldGenerator::GeneratePropertyHeader(io::Printer* printer) const {
     if (IsReferenceType(GetObjectiveCType(descriptor_))) {
       printer->Print(variables_,
-        "@property (readonly, retain)$storage_attribute$ $storage_type$ $name$;\n");
+        "@property (readonly, retain)$storage_attribute$ $storage_type$ $name$$deprecated_attribute$;\n");
     } else if (GetObjectiveCType(descriptor_) == OBJECTIVECTYPE_BOOLEAN) {
       printer->Print(variables_,
-        "- (BOOL) $name$;\n");
+        "- (BOOL) $name$$deprecated_attribute$;\n");
     } else {
       printer->Print(variables_,
-        "@property (readonly) $storage_type$ $name$;\n");
+        "@property (readonly) $storage_type$ $name$$deprecated_attribute$;\n");
     }
   }
 
@@ -311,10 +317,10 @@ namespace google { namespace protobuf { namespace compiler { namespace objective
 
   void PrimitiveFieldGenerator::GenerateBuilderMembersHeader(io::Printer* printer) const {
     printer->Print(variables_,
-      "- (BOOL) has$capitalized_name$;\n"
-      "- ($storage_type$) $name$$storage_attribute$;\n"
-      "- ($classname$_Builder*) set$capitalized_name$:($storage_type$) value;\n"
-      "- ($classname$_Builder*) clear$capitalized_name$;\n");
+      "- (BOOL) has$capitalized_name$$deprecated_attribute$;\n"
+      "- ($storage_type$) $name$$storage_attribute$$deprecated_attribute$;\n"
+      "- ($classname$_Builder*) set$capitalized_name$:($storage_type$) value$deprecated_attribute$;\n"
+      "- ($classname$_Builder*) clear$capitalized_name$$deprecated_attribute$;\n");
   }
 
 
@@ -448,7 +454,7 @@ namespace google { namespace protobuf { namespace compiler { namespace objective
 
 
   void RepeatedPrimitiveFieldGenerator::GeneratePropertyHeader(io::Printer* printer) const {
-    printer->Print(variables_, "@property (readonly, retain) PBArray * $name$;\n");
+    printer->Print(variables_, "@property (readonly, retain) PBArray * $name$$deprecated_attribute$;\n");
   }
 
 
@@ -474,17 +480,17 @@ namespace google { namespace protobuf { namespace compiler { namespace objective
 
   void RepeatedPrimitiveFieldGenerator::GenerateMembersHeader(io::Printer* printer) const {
     printer->Print(variables_,
-      "- ($storage_type$)$name$AtIndex:(NSUInteger)index;\n");
+      "- ($storage_type$)$name$AtIndex:(NSUInteger)index$deprecated_attribute$;\n");
   }
 
   void RepeatedPrimitiveFieldGenerator::GenerateBuilderMembersHeader(io::Printer* printer) const {
     printer->Print(variables_,
-      "- (PBAppendableArray *)$name$;\n"
-      "- ($storage_type$)$name$AtIndex:(NSUInteger)index;\n"
-      "- ($classname$_Builder *)add$capitalized_name$:($storage_type$)value;\n"
-      "- ($classname$_Builder *)set$capitalized_name$Array:(NSArray *)array;\n"
-      "- ($classname$_Builder *)set$capitalized_name$Values:(const $storage_type$ *)values count:(NSUInteger)count;\n"
-      "- ($classname$_Builder *)clear$capitalized_name$;\n");
+      "- (PBAppendableArray *)$name$$deprecated_attribute$;\n"
+      "- ($storage_type$)$name$AtIndex:(NSUInteger)index$deprecated_attribute$;\n"
+      "- ($classname$_Builder *)add$capitalized_name$:($storage_type$)value$deprecated_attribute$;\n"
+      "- ($classname$_Builder *)set$capitalized_name$Array:(NSArray *)array$deprecated_attribute$;\n"
+      "- ($classname$_Builder *)set$capitalized_name$Values:(const $storage_type$ *)values count:(NSUInteger)count$deprecated_attribute$;\n"
+      "- ($classname$_Builder *)clear$capitalized_name$$deprecated_attribute$;\n");
   }
 
 
