@@ -64,6 +64,14 @@ namespace google { namespace protobuf { namespace compiler { namespace objective
         file_generator.GenerateHeader(&printer);
       }
 
+      //  generate extension header
+      {
+        scoped_ptr<io::ZeroCopyOutputStream> output(
+          output_directory->Open(filepath + ".ext.pb.h"));
+        io::Printer printer(output.get(), '$');
+        file_generator.GenerateExtensionHeader(&printer);
+      }
+    
       // Generate m file.
       {
         scoped_ptr<io::ZeroCopyOutputStream> output(

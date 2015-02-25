@@ -215,12 +215,15 @@ namespace google { namespace protobuf { namespace compiler { namespace objective
   }
 
 
-  void MessageGenerator::DetermineDependencies(set<string>* dependencies) {
-    dependencies->insert("@class " + ClassName(descriptor_));
-    dependencies->insert("@class " + ClassName(descriptor_) + "_Builder");
+  void MessageGenerator::DetermineDependencies(set<string>* dependencies, bool builderDependency) {
+    if (builderDependency) {
+      dependencies->insert("@class " + ClassName(descriptor_) + "_Builder");
+    } else {
+      dependencies->insert("@class " + ClassName(descriptor_));
+    }
 
     for (int i = 0; i < descriptor_->nested_type_count(); i++) {
-      MessageGenerator(descriptor_->nested_type(i)).DetermineDependencies(dependencies);
+      MessageGenerator(descriptor_->nested_type(i)).DetermineDependencies(dependencies, builderDependency);
     }
   }
 
@@ -258,25 +261,32 @@ namespace google { namespace protobuf { namespace compiler { namespace objective
     }
 
     for (int i = 0; i < descriptor_->field_count(); i++) {
-      field_generators_.get(descriptor_->field(i)).GenerateHasPropertyHeader(printer);
-    }
-    for (int i = 0; i < descriptor_->field_count(); i++) {
       field_generators_.get(descriptor_->field(i)).GeneratePropertyHeader(printer);
     }
-    for (int i = 0; i < descriptor_->field_count(); i++) {
-      field_generators_.get(descriptor_->field(i)).GenerateMembersHeader(printer);
+
+    printer->Print("@end\n\n");
+        
+    for (int i = 0; i < descriptor_->nested_type_count(); i++) {
+      MessageGenerator(descriptor_->nested_type(i)).GenerateMessageHeader(printer);
     }
+  }
+  
+  
+  void MessageGenerator::GenerateExtensionHeader(io::Printer* printer) {
 
     printer->Print(
-      "\n"
-      "+ ($classname$*) defaultInstance;\n"
-      "- ($classname$*) defaultInstance;\n",
-      "classname", ClassName(descriptor_));
+                   "@interface $classname$ ()\n",
+                   "classname", ClassName(descriptor_));
+    
     printer->Print(
-      "\n",
-      "fileclass", FileClassName(descriptor_->file()),
-      "identifier", UniqueFileScopeIdentifier(descriptor_));
-
+                   "+ ($classname$*) defaultInstance;\n"
+                   "- ($classname$*) defaultInstance;\n",
+                   "classname", ClassName(descriptor_));
+    printer->Print(
+                   "\n",
+                   "fileclass", FileClassName(descriptor_->file()),
+                   "identifier", UniqueFileScopeIdentifier(descriptor_));
+    
     for (int i = 0; i < descriptor_->extension_count(); i++) {
       ExtensionGenerator(ClassName(descriptor_), descriptor_->extension(i)).GenerateMembersHeader(printer);
     }
@@ -284,22 +294,29 @@ namespace google { namespace protobuf { namespace compiler { namespace objective
     GenerateIsInitializedHeader(printer);
     GenerateMessageSerializationMethodsHeader(printer);
 
+    for (int i = 0; i < descriptor_->field_count(); i++) {
+      field_generators_.get(descriptor_->field(i)).GenerateHasPropertyHeader(printer);
+    }
+    for (int i = 0; i < descriptor_->field_count(); i++) {
+      field_generators_.get(descriptor_->field(i)).GenerateMembersHeader(printer);
+    }
+    
     printer->Print(
-      "- ($classname$_Builder*) builder;\n"
-      "+ ($classname$_Builder*) builder;\n"
-      "+ ($classname$_Builder*) builderWithPrototype:($classname$*) prototype;\n"
-      "- ($classname$_Builder*) toBuilder;\n",
-      "classname", ClassName(descriptor_));
-
+                   "- ($classname$_Builder*) builder;\n"
+                   "+ ($classname$_Builder*) builder;\n"
+                   "+ ($classname$_Builder*) builderWithPrototype:($classname$*) prototype;\n"
+                   "- ($classname$_Builder*) toBuilder;\n",
+                   "classname", ClassName(descriptor_));
+    
     GenerateParseFromMethodsHeader(printer);
 
     printer->Print("@end\n\n");
 
-    for (int i = 0; i < descriptor_->nested_type_count(); i++) {
-      MessageGenerator(descriptor_->nested_type(i)).GenerateMessageHeader(printer);
-    }
-
     GenerateBuilderHeader(printer);
+    
+    for (int i = 0; i < descriptor_->nested_type_count(); i++) {
+      MessageGenerator(descriptor_->nested_type(i)).GenerateExtensionHeader(printer);
+    }
   }
 
 

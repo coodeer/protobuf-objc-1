@@ -42,7 +42,8 @@ class FileGenerator {
 
   void GenerateSource(io::Printer* printer);
   void GenerateHeader(io::Printer* printer);
-  void DetermineDependencies(set<string>* dependencies);
+  void GenerateExtensionHeader(io::Printer* printer);
+  void DetermineDependencies(set<string>* dependencies, bool builderDependency);
 
   const string& classname()    { return classname_;    }
 

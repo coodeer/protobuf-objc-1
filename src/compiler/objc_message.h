@@ -45,9 +45,10 @@ class MessageGenerator {
   void GenerateStaticVariablesSource(io::Printer* printer);
   void GenerateEnumHeader(io::Printer* printer);
   void GenerateMessageHeader(io::Printer* printer);
+  void GenerateExtensionHeader(io::Printer* printer);
   void GenerateSource(io::Printer* printer);
   void GenerateExtensionRegistrationSource(io::Printer* printer);
-  void DetermineDependencies(set<string>* dependencies);
+  void DetermineDependencies(set<string>* dependencies, bool builderDependency);
 
  private:
   void GenerateMessageSerializationMethodsHeader(io::Printer* printer);
