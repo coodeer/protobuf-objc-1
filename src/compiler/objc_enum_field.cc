@@ -47,6 +47,11 @@ namespace google { namespace protobuf { namespace compiler { namespace objective
         (*variables)["tag"] = SimpleItoa(internal::WireFormat::MakeTag(descriptor));
         (*variables)["tag_size"] = SimpleItoa(
           internal::WireFormat::TagSize(descriptor->number(), descriptor->type()));
+        if (descriptor->options().deprecated()) {
+          (*variables)["deprecated_attribute"] = " DEPRECATED_ATTRIBUTE";
+        } else {
+          (*variables)["deprecated_attribute"] = "";
+        }
     }
   }  // namespace
 
@@ -71,13 +76,13 @@ namespace google { namespace protobuf { namespace compiler { namespace objective
 
 
   void EnumFieldGenerator::GenerateHasPropertyHeader(io::Printer* printer) const {
-    printer->Print(variables_, "- (BOOL) has$capitalized_name$;\n");
+    printer->Print(variables_, "- (BOOL) has$capitalized_name$$deprecated_attribute$;\n");
   }
 
 
   void EnumFieldGenerator::GeneratePropertyHeader(io::Printer* printer) const {
     printer->Print(variables_,
-      "@property (readonly) $type$ $name$;\n");
+      "@property (readonly, assign) $type$ $name$$deprecated_attribute$;\n");
   }
 
 
