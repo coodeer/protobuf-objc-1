@@ -114,11 +114,6 @@ namespace google { namespace protobuf { namespace compiler { namespace objective
   }
 
 
-  void MessageFieldGenerator::GenerateDeallocSource(io::Printer* printer) const {
-    printer->Print(variables_, "self.$name$ = nil;\n");
-  }
-
-
   void MessageFieldGenerator::GenerateInitializationSource(io::Printer* printer) const {
     printer->Print(variables_, "self.$name$ = [$type$ defaultInstance];\n");
   }
@@ -309,12 +304,6 @@ namespace google { namespace protobuf { namespace compiler { namespace objective
   void RepeatedMessageFieldGenerator::GenerateSynthesizeSource(io::Printer* printer) const {
     printer->Print(variables_, "@synthesize $list_name$;\n");
     printer->Print(variables_, "@dynamic $name$;\n");
-  }
-
-
-  void RepeatedMessageFieldGenerator::GenerateDeallocSource(io::Printer* printer) const {
-    printer->Print(variables_,
-      "self.$list_name$ = nil;\n");
   }
 
 
