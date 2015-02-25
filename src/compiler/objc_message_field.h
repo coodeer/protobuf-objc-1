@@ -33,7 +33,6 @@ class MessageFieldGenerator : public FieldGenerator {
   explicit MessageFieldGenerator(const FieldDescriptor* descriptor);
   ~MessageFieldGenerator();
 
-  void GenerateHasFieldHeader(io::Printer* printer) const;
   void GenerateFieldHeader(io::Printer* printer) const;
   void GenerateHasPropertyHeader(io::Printer* printer) const;
   void GeneratePropertyHeader(io::Printer* printer) const;
@@ -73,7 +72,6 @@ class RepeatedMessageFieldGenerator : public FieldGenerator {
   explicit RepeatedMessageFieldGenerator(const FieldDescriptor* descriptor);
   ~RepeatedMessageFieldGenerator();
 
-  void GenerateHasFieldHeader(io::Printer* printer) const;
   void GenerateFieldHeader(io::Printer* printer) const;
   void GenerateHasPropertyHeader(io::Printer* printer) const;
   void GeneratePropertyHeader(io::Printer* printer) const;

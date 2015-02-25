@@ -33,7 +33,6 @@ class PrimitiveFieldGenerator : public FieldGenerator {
   explicit PrimitiveFieldGenerator(const FieldDescriptor* descriptor);
   ~PrimitiveFieldGenerator();
 
-  void GenerateHasFieldHeader(io::Printer* printer) const;
   void GenerateFieldHeader(io::Printer* printer) const;
   void GenerateHasPropertyHeader(io::Printer* printer) const;
   void GeneratePropertyHeader(io::Printer* printer) const;
@@ -71,7 +70,6 @@ class RepeatedPrimitiveFieldGenerator : public FieldGenerator {
   explicit RepeatedPrimitiveFieldGenerator(const FieldDescriptor* descriptor);
   ~RepeatedPrimitiveFieldGenerator();
 
-  void GenerateHasFieldHeader(io::Printer* printer) const;
   void GenerateFieldHeader(io::Printer* printer) const;
   void GenerateHasPropertyHeader(io::Printer* printer) const;
   void GeneratePropertyHeader(io::Printer* printer) const;

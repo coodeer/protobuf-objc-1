@@ -65,13 +65,7 @@ namespace google { namespace protobuf { namespace compiler { namespace objective
   }
 
 
-  void EnumFieldGenerator::GenerateHasFieldHeader(io::Printer* printer) const {
-    printer->Print(variables_, "BOOL has$capitalized_name$_:1;\n");
-  }
-
-
   void EnumFieldGenerator::GenerateFieldHeader(io::Printer* printer) const {
-    printer->Print(variables_, "$type$ $name$;\n");
   }
 
 
@@ -88,7 +82,8 @@ namespace google { namespace protobuf { namespace compiler { namespace objective
 
   void EnumFieldGenerator::GenerateExtensionSource(io::Printer* printer) const {
     printer->Print(variables_,
-      "@property $type$ $name$;\n");
+      "@property (assign) $type$ $name$;\n"
+      "@property (assign) BOOL has$capitalized_name$;\n");
   }
 
 
@@ -101,14 +96,6 @@ namespace google { namespace protobuf { namespace compiler { namespace objective
 
 
   void EnumFieldGenerator::GenerateSynthesizeSource(io::Printer* printer) const {
-    printer->Print(variables_,
-      "- (BOOL) has$capitalized_name$ {\n"
-      "  return !!has$capitalized_name$_;\n"
-      "}\n"
-      "- (void) setHas$capitalized_name$:(BOOL) value_ {\n"
-      "  has$capitalized_name$_ = !!value_;\n"
-      "}\n"
-      "@synthesize $name$;\n");
   }
 
 
@@ -243,12 +230,7 @@ namespace google { namespace protobuf { namespace compiler { namespace objective
   }
 
 
-  void RepeatedEnumFieldGenerator::GenerateHasFieldHeader(io::Printer* printer) const {
-  }
-
-
   void RepeatedEnumFieldGenerator::GenerateFieldHeader(io::Printer* printer) const {
-    printer->Print(variables_, "PBAppendableArray * $list_name$;\n");
     if (descriptor_->options().packed()) {
       printer->Print(variables_,
         "int32_t $name$MemoizedSerializedSize;\n");
@@ -261,17 +243,16 @@ namespace google { namespace protobuf { namespace compiler { namespace objective
 
 
   void RepeatedEnumFieldGenerator::GeneratePropertyHeader(io::Printer* printer) const {
-    printer->Print(variables_, "@property (readonly, retain) PBArray * $name$;\n");
+    printer->Print(variables_, "@property (readonly, strong) PBArray * $name$;\n");
   }
 
 
   void RepeatedEnumFieldGenerator::GenerateExtensionSource(io::Printer* printer) const {
     printer->Print(variables_,
-      "@property (retain) PBAppendableArray * $list_name$;\n");
+      "@property (strong) PBAppendableArray * $list_name$;\n");
   }
 
   void RepeatedEnumFieldGenerator::GenerateSynthesizeSource(io::Printer* printer) const {
-    printer->Print(variables_, "@synthesize $list_name$;\n");
     printer->Print(variables_, "@dynamic $name$;\n");
   }
 
@@ -319,10 +300,10 @@ namespace google { namespace protobuf { namespace compiler { namespace objective
   void RepeatedEnumFieldGenerator::GenerateMembersSource(io::Printer* printer) const {
     printer->Print(variables_,
       "- (PBArray *)$name$ {\n"
-      "  return $list_name$;\n"
+      "  return self.$list_name$;\n"
       "}\n"
       "- ($type$)$name$AtIndex:(NSUInteger)index {\n"
-      "  return [$list_name$ int32AtIndex:index];\n"
+      "  return [self.$list_name$ int32AtIndex:index];\n"
       "}\n");
   }
 
@@ -359,7 +340,7 @@ namespace google { namespace protobuf { namespace compiler { namespace objective
     printer->Print(variables_,
       "if (other.$list_name$.count > 0) {\n"
       "  if (__result.$list_name$ == nil) {\n"
-      "    __result.$list_name$ = [[other.$list_name$ copyWithZone:[other.$list_name$ zone]] autorelease];\n"
+      "    __result.$list_name$ = [other.$list_name$ copy];\n"
       "  } else {\n"
       "    [__result.$list_name$ appendArray:other.$list_name$];\n"
       "  }\n"

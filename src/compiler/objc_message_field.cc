@@ -70,14 +70,8 @@ namespace google { namespace protobuf { namespace compiler { namespace objective
   MessageFieldGenerator::~MessageFieldGenerator() {
   }
 
-
-  void MessageFieldGenerator::GenerateHasFieldHeader(io::Printer* printer) const {
-    printer->Print(variables_, "BOOL has$capitalized_name$_:1;\n");
-  }
-
-
+  
   void MessageFieldGenerator::GenerateFieldHeader(io::Printer* printer) const {
-    printer->Print(variables_, "$storage_type$ $name$;\n");
   }
 
 
@@ -87,14 +81,15 @@ namespace google { namespace protobuf { namespace compiler { namespace objective
 
 
   void MessageFieldGenerator::GeneratePropertyHeader(io::Printer* printer) const {
-    printer->Print(variables_, "@property (readonly, retain)"
+    printer->Print(variables_, "@property (readonly, strong)"
                    "$storage_attribute$ $storage_type$ $name$$deprecated_attribute$;\n");
   }
 
 
   void MessageFieldGenerator::GenerateExtensionSource(io::Printer* printer) const {
     printer->Print(variables_,
-      "@property (retain)$storage_attribute$ $storage_type$ $name$;\n");
+      "@property (strong) $storage_type$ $name$;\n"
+      "@property (assign) BOOL has$capitalized_name$;\n");
   }
 
 
@@ -103,14 +98,6 @@ namespace google { namespace protobuf { namespace compiler { namespace objective
 
 
   void MessageFieldGenerator::GenerateSynthesizeSource(io::Printer* printer) const {
-    printer->Print(variables_,
-      "- (BOOL) has$capitalized_name$ {\n"
-      "  return !!has$capitalized_name$_;\n"
-      "}\n"
-      "- (void) setHas$capitalized_name$:(BOOL) value_ {\n"
-      "  has$capitalized_name$_ = !!value_;\n"
-      "}\n"
-      "@synthesize $name$;\n");
   }
 
 
@@ -277,12 +264,7 @@ namespace google { namespace protobuf { namespace compiler { namespace objective
   }
 
 
-  void RepeatedMessageFieldGenerator::GenerateHasFieldHeader(io::Printer* printer) const {
-  }
-
-
   void RepeatedMessageFieldGenerator::GenerateFieldHeader(io::Printer* printer) const {
-    printer->Print(variables_, "PBAppendableArray * $list_name$;\n");
   }
 
 
@@ -291,18 +273,17 @@ namespace google { namespace protobuf { namespace compiler { namespace objective
 
 
   void RepeatedMessageFieldGenerator::GeneratePropertyHeader(io::Printer* printer) const {
-    printer->Print(variables_, "@property (readonly, retain) PBArray * $name$$deprecated_attribute$;\n");
+    printer->Print(variables_, "@property (readonly, strong) PBArray * $name$$deprecated_attribute$;\n");
   }
 
 
   void RepeatedMessageFieldGenerator::GenerateExtensionSource(io::Printer* printer) const {
     printer->Print(variables_,
-      "@property (retain) PBAppendableArray * $list_name$;\n");
+      "@property (strong) PBAppendableArray * $list_name$;\n");
   }
 
 
   void RepeatedMessageFieldGenerator::GenerateSynthesizeSource(io::Printer* printer) const {
-    printer->Print(variables_, "@synthesize $list_name$;\n");
     printer->Print(variables_, "@dynamic $name$;\n");
   }
 
@@ -319,10 +300,10 @@ namespace google { namespace protobuf { namespace compiler { namespace objective
   void RepeatedMessageFieldGenerator::GenerateMembersSource(io::Printer* printer) const {
     printer->Print(variables_,
       "- (PBArray *)$name$ {\n"
-      "  return $list_name$;\n"
+      "  return self.$list_name$;\n"
       "}\n"
       "- ($storage_type$)$name$AtIndex:(NSUInteger)index {\n"
-      "  return [$list_name$ objectAtIndex:index];\n"
+      "  return [self.$list_name$ objectAtIndex:index];\n"
       "}\n");
   }
 
@@ -391,7 +372,7 @@ namespace google { namespace protobuf { namespace compiler { namespace objective
     printer->Print(variables_,
       "if (other.$list_name$.count > 0) {\n"
       "  if (__result.$list_name$ == nil) {\n"
-      "    __result.$list_name$ = [[other.$list_name$ copyWithZone:[other.$list_name$ zone]] autorelease];\n"
+      "    __result.$list_name$ = [other.$list_name$ copy];\n"
       "  } else {\n"
       "    [__result.$list_name$ appendArray:other.$list_name$];\n"
       "  }\n"
