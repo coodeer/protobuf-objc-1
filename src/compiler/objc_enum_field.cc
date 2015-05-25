@@ -106,10 +106,10 @@ namespace google { namespace protobuf { namespace compiler { namespace objective
 
   void EnumFieldGenerator::GenerateBuilderMembersHeader(io::Printer* printer) const {
     printer->Print(variables_,
-      "- (BOOL) has$capitalized_name$;\n"
-      "- ($type$) $name$;\n"\
-      "- ($classname$_Builder*) set$capitalized_name$:($type$) value;\n"
-      "- ($classname$_Builder*) clear$capitalized_name$;\n");
+      "- (BOOL) has$capitalized_name$$deprecated_attribute$;\n"
+      "- ($type$) $name$$deprecated_attribute$;\n"\
+      "- ($classname$_Builder*) set$capitalized_name$:($type$) value$deprecated_attribute$;\n"
+      "- ($classname$_Builder*) clear$capitalized_name$$deprecated_attribute$;\n");
   }
 
 
@@ -268,12 +268,12 @@ namespace google { namespace protobuf { namespace compiler { namespace objective
 
   void RepeatedEnumFieldGenerator::GenerateBuilderMembersHeader(io::Printer* printer) const {
     printer->Print(variables_,
-      "- (PBAppendableArray *)$name$;\n"
-      "- ($type$)$name$AtIndex:(NSUInteger)index;\n"
-      "- ($classname$_Builder *)add$capitalized_name$:($type$)value;\n"
-      "- ($classname$_Builder *)set$capitalized_name$Array:(NSArray *)array;\n"
-      "- ($classname$_Builder *)set$capitalized_name$Values:(const $type$ *)values count:(NSUInteger)count;\n"
-      "- ($classname$_Builder *)clear$capitalized_name$;\n");
+      "- (PBAppendableArray *)$name$$deprecated_attribute$;\n"
+      "- ($type$)$name$AtIndex:(NSUInteger)index$deprecated_attribute$;\n"
+      "- ($classname$_Builder *)add$capitalized_name$:($type$)value$deprecated_attribute$;\n"
+      "- ($classname$_Builder *)set$capitalized_name$Array:(NSArray *)array$deprecated_attribute$;\n"
+      "- ($classname$_Builder *)set$capitalized_name$Values:(const $type$ *)values count:(NSUInteger)count$deprecated_attribute$;\n"
+      "- ($classname$_Builder *)clear$capitalized_name$$deprecated_attribute$;\n");
   }
 
 
